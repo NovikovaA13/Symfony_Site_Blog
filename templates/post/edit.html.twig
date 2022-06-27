@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification d'un article{% endblock %}
+
+{% block body %}
+
+
+    <h1 class="mt-3 mb-5 text-center">Modification d'un article n° {{ post.id }}</h1>
+    <div>
+        {{ form_start(form, {'action': path('post_edit', {'slug': post.slug}), 'method': 'POST'}) }}
+        {{ form_errors(form, {'attr': {'label': '', 'class': 'alert alert-danger'}}) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.body, {
+                'attr': {
+                    'rows': '10',
+                    'cols': '10'
+                }
+            })
+        }}
+        <button type="submit" class="btn btn-success">Modifier</button>
+        {{ form_end(form) }}
+        {% if post.getCategories().snapshot|length %}
+            <p class="mt-3">Supprimer une catégorie <i class="fa fa-tags" aria-hidden="true"></i>
+            <ul class="tags">
+                {% for category in post.getCategories() %}
+                    <li><a href="{{ path('delete_category', {'slug': post.slug, 'category_id': category.id }) }}" class="tag tag_red">
+                            <i class="fa fa-tags" aria-hidden="true"></i> {{ category.name }} <span aria-hidden="true">×</span></a>
+                    </li>
+                {% endfor %}
+            </ul>
+            </p>
+        {% endif %}
+        <p class="mt-3">Ajouter une catégorie <i class="fa fa-tags" aria-hidden="true"></i>
+        <ul class="tags">
+            {% for category in all_categories %}
+                <li><a href="{{ path('add_category', {'slug': post.slug, 'category_id': category.id }) }}" class="tag tag_green"></i>
+                        <i class="fa fa-tags" aria-hidden="true"></i> {{ category.name }} <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+                </li>
+            {% endfor %}
+        </ul>
+        </p>
+        <p><a class="btn btn-primary" href={{ path('post_view', {'slug': post.slug }) }}>Voir l'article</a></p>
+        <p><a class="btn btn-danger" href={{ path('post_delete', {'slug': post.slug }) }}>Supprimer</a></p>
+
+    </div>
+
+{% endblock %}

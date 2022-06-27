@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    <div id="main">
+        <h1 class="mt-3 mb-3">{{ post.title }}</h1>
+        <p class="post-metadata">
+            <span class="metadata me-3"><i class="fa fa-calendar"></i> {{ post.getCreatedAt() | date('Y/m/d à H:i:s') }}</span>
+            <span class="metadata"><i class="fa fa-user"></i> {{ post.user.name }}</span>
+        </p>
+        <div class="media text-muted pt-3">
+            <p class="media-body pb-3 lh-125 border-bottom border-gray">{{ post.body }}</p>
+            <p>
+                <ul class="tags">
+                    {% for category in post.getCategories() %}
+                        <li><a href="{{ path('postsByCategory', {'id': category.id }) }}" class="tag"><i class="fa fa-tags" aria-hidden="true"></i>
+                                {{ category.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </p>
+            {% if is_granted('POST_EDIT', post) %}
+                <p><a class="btn btn-warning me-3" href={{ path('post_edit', {'slug': post.slug }) }} >Modifier</a>
+                <a class="btn btn-danger" href={{ path('post_delete', {'slug': post.slug }) }}>Supprimer</a></p>
+            {% endif %}
+        </div>
+        <div class="mt-3 mb-4">
+            <h3>
+                <i class="fa fa-comments" aria-hidden="true"></i> {{ post.comments|length }} commentaires
+            </h3>
+        </div>
+        {% if is_granted('ROLE_USER') %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Nouveau commentaire</h5>
+                {{ form_start(form) }}
+                {{ form_row(form.comment) }}
+                <p class="mt-2"><button type="submit" class="btn btn-success">Ajouter un commentaire</button></p>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        {% elseif app.user %}
+            {% if app.user.roles[0] == 'IS_BANNED' %}
+                <div class="alert alert-warning alert-dismissible fade show mt-3">
+                    Vous êtes banni. Vous n'avez pas le droit de créer, modifier et supprimer les articles et créer les commentaires.
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-secondary">
+                <p>Pour ajouter un commentaire veuillez
+                    <a class="btn btn-success" href="{{ path('login') }}">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> vous vous authentifier.
+                    </a>
+                </p>
+            </div>
+        {% endif %}
+        <div>
+        {% for comment in post.comments %}
+            <div class="card mb-1">
+                <div class="card-body">
+                    <p class="card-text">{{ comment.comment }}</p>
+                    <footer class="blockquote-footer"><cite>{{ comment.user.name }}</cite> commenté le <strong>{{ comment.createdAt()|date('Y/m/d') }}</strong></footer>
+                    {% if is_granted('COMMENT_EDIT', comment) %}
+                        <a class="btn btn-danger" href={{ path('delete_comment', {'id': comment.id}) }}>Supprimer ce commentaire</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

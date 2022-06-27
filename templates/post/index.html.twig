@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les articles{% endblock %}
+
+{% block body %}
+
+    <h1 class="display-2 text-bold mb-3 mt-2 text-center">Tous les articles</h1>
+
+        <div class="list-group mb-4">
+        {% for post in posts %}
+            <article class="post mt-2 mb-3">
+                <a href="{{ path('post_view', {'slug': post.slug }) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h2 class="mb-1">{{ post.title }}</h2>
+                </div>
+                    <p class="post-metadata">
+                        <span class="metadata me-3"><i class="fa fa-calendar"></i> {{ post.createdAt()|date('Y/m/h') }}</span>
+                        <span class="metadata"><i class="fa fa-user"></i> {{ post.user.name }}</span>
+                    </p>
+                    <p class="mb-1">{{ post.body | slice(0, 350) ~ '...'}} </p>
+                </a>
+                <p>
+                    <ul class="tags">
+                    {% for category in post.getCategories() %}
+                            <li><a href="{{ path('postsByCategory', {'id': category.id }) }}" class="tag"><i class="fa fa-tags" aria-hidden="true"></i>
+                                {{ category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </article>
+        {% endfor %}
+        </div>
+     {{ knp_pagination_render(posts) }}
+    </div>
+
+
+
+
+{% endblock %}

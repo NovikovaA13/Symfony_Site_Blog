@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Registration {% endblock %}
+
+{% block body %}
+
+
+        <h1 class="text-center mt-2 mb-3">Registration</h1>
+                <div class="alert alert-error">
+                        {{ form_errors(form) }}
+                </div>
+        <div>
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+                {{ form_start(form) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.plainPassword.first, {'label' : 'Mot de passe', 'class': 'form-control'}) }}
+                {{ form_row(form.plainPassword.second, {'label' : 'Mot de passe', 'help': 'Répeter un mot de passe'}) }}
+                <input type="submit" class="btn btn-success" value="S'enregistrer">
+                {{ form_end(form) }}
+        </div>
+
+        <p class="mt-2"><a href="{{ path('connect_google_start') }}" class="link-secondary">Entrer par Google</a><br>
+        <p><a href="{{ path('connect_github_start') }}" class="link-secondary">Entrer par Github</a><br>
+        </p>
+{% endblock %}

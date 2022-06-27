@@ -1,0 +1,107 @@
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus
+{
+    background-color: #8064A2;
+    border-color: #6f42c1;
+}
+.btn-success,
+.btn-success:hover,
+.btn-success:active,
+.btn-success:visited,
+.btn-success:focus
+{
+    background-color: #8064A2;
+    border-color: #6f42c1;
+}
+.navbar-brand,
+.navbar-brand:hover,
+.navbar-brand:active,
+.navbar-brand:visited,
+.navbar-brand:focus
+{
+    color: #8064A2;
+}
+
+.myButt
+{
+    max-width: 200px;
+}
+.tags
+{
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.tags li
+{
+    float: left;
+}
+
+.tag
+{
+    background-color: #8064A2;
+    border-radius: 0 0 0 3px;
+    color: white;
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 20px 0 5px;
+    position: relative;
+    margin: 0 10px 10px 0;
+    text-decoration: none;
+    -webkit-transition: color 0.2s;
+}
+
+.tag:hover
+{
+    background-color: #6f42c1;
+    color: white;
+}
+
+.tag:hover::after
+{
+    border-left-color: #6f42c1;
+}
+.page-link,
+.page-link:hover,
+.page-link:active,
+.page-link:visited,
+.page-link:focus {
+    color: #8064A2;
+    border-color: #6f42c1;
+}
+.page-item,
+.page-item:hover,
+.page-item:active,
+.page-item:visited,
+.page-item:focus
+{
+    color: #8064A2;
+    border-color: #6f42c1;
+}
+.tag_red
+{
+    background-color: red;
+}
+.tag_red:hover
+{
+    background-color: darkred;
+}
+.tag_green
+{
+    background-color: green;
+}
+.tag_green:hover
+{
+    background-color: darkgreen;
+}
+.form-error-icon
+{
+    background-color: #AA3333;
+    color: white;
+}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-header text-center mt-3 mb-4">
+            <h1>Login</h1>
+        </div>
+        <div class="row">
+          <div class="col-sm-5">
+              <div class="well">
+                  {% if error %}
+                      <div class="alert alert-danger">{{ error.message }}</div>
+                  {% endif %}
+                  <form action="{{ path('login') }}" method="post">
+                  <fieldset>
+                      <legend><i class="fa fa-lock" aria-hidden="true"></i> Connexion sécurisée</legend>
+                      <div class="form-group">
+                          <label for="username">Email</label>
+                          <input type="email" id="username" name="_username" value="{{ user }}" class="form-control"/>
+                      </div>
+                      <div class="form-group">
+                          <label for="password">Mot de passe</label>
+                          <input type="password" id="password" name="_password" class="form-control" />
+                      </div>
+                      <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                      <button type="submit" class="btn btn-primary mt-2">
+                          <i class="fa fa-sign-in" aria-hidden="true"></i> Connectez-vous
+                      </button>
+                  </fieldset>
+                  </form>
+                  <br>
+                  <p><a href="{{ path('connect_google_start') }}" class="link-secondary">Entrer par Google</a><br>
+                  <p><a href="{{ path('connect_github_start') }}" class="link-secondary">Entrer par Github</a><br>
+                  </p>
+              </div>
+          </div>
+        </div>
+
+    </div>
+
+{% endblock %}

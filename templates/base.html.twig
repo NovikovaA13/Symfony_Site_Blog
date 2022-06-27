@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+
+
+        {#{{ encore_entry_link_tags('app') }}#}
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('build/js/app.js') }}"></script>
+
+        {#{{ encore_entry_script_tags('app') }}#}
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top bg-dark">
+    <div class="container">
+
+        <div class="navbar-left">
+            <a class="navbar-brand" href={{ path('all_posts') }}><i class="fa fa-home"></i> Home</a>
+            {% if is_granted('ROLE_USER') %}
+                    <a class="navbar-brand" href="#" tabindex="-1" aria-disabled="true">Bonjour, {{ app.user.name }}</a>
+
+                    <a class="navbar-brand" href="{{ path('post_add') }}"><i class="fa fa-plus"></i> Ajout d'un article</a>
+
+                    <a class="navbar-brand" href="{{ path('logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+            {% elseif app.user %}
+                    {% if app.user.roles[0] == 'IS_BANNED' %}
+                        <a class="navbar-brand" href="#" tabindex="-1" aria-disabled="true">Bonjour, {{ app.user.name }}. Vous êtes banni.</a>
+                        <a class="navbar-brand" href="{{ path('logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+                    {% endif %}
+            {% else %}
+                    <a class="navbar-brand" href="{{ path('login') }}"><i class="fa fa-sign-in"></i> Login</a>
+                    <a class="navbar-brand" href="{{ path('register') }}"><i class="fa fa-sign-in-alt"></i> Registration</a>
+            {% endif %}
+
+
+
+        </div>
+        <div class="navbar-right">
+            <form action="{{ path('blog_search') }}" method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="search" name="q"  class="form-control mr-sm-2" placeholder="Rechercher">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="submit" value="Rechercher">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</nav>
+{% if is_granted('ROLE_ADMIN') %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('all_user') }}"><i class="fa fa-users"></i> Gestion des utilisateurs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('all_categories') }}"><i class="fa fa-tags" aria-hidden="true"></i><i class="fa fa-tags" aria-hidden="true"></i>
+                              Tous les catégories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('category_add') }}"><i class="fa fa-tags" aria-hidden="true"></i>
+                              Ajouter une catégorie</a>
+                    </li>
+                </ul>
+
+        </div>
+    </nav>
+{% endif %}
+<div class="container">
+    {% for flashes in app.session.flashbag.all %}
+        {% for message in flashes %}
+            <div class="alert alert-success alert-dismissible fade show mt-3">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% if app.user %}
+        {% if app.user.roles[0] == 'IS_BANNED' %}
+        <div class="alert alert-warning alert-dismissible fade show mt-3">
+            Vous êtes banni. Vous n'avez pas le droit de créer, modifier et supprimer les articles et créer les commentaires.
+        </div>
+        {% endif %}
+    {% endif %}
+
+{% block body %}{% endblock %}
+</div>
+
+</body>
+</html>
